@@ -9,21 +9,36 @@
     align-items: center;
     justify-content: space-between;
 
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(20px) saturate(180%);
     z-index: 100;
 
-    transition: transform 0.35s ease;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
     animation: navbarSlide 0.6s cubic-bezier(.2,.8,.2,1);
+    
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 body.dark .navbar {
-    background: rgba(2,6,23,0.75);
+    background: rgba(2,6,23,0.8);
     color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 body.light .navbar {
-    background: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.8);
     color: #020617;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Scrolled effect */
+.navbar.scrolled {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(24px) saturate(200%);
+}
+
+body.light .navbar.scrolled {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .nav-left,
@@ -33,79 +48,308 @@ body.light .navbar {
     gap: 10px;
 }
 
+/* ====================================== */
+/* LOGO SECTION - ANIMATED */
+/* ====================================== */
+.logo-icon {
+    font-size: 20px;
+    animation: logoFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+}
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-3px) rotate(5deg);
+    }
+}
+
 .logo {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
+    background: linear-gradient(90deg,#60a5fa,#22d3ee,#818cf8,#a78bfa,#60a5fa);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 5s ease infinite;
+    position: relative;
+    letter-spacing: 0.5px;
+}
+
+/* Glow effect di belakang logo */
+.logo::after {
+    content: 'CALCULATOR';
+    position: absolute;
+    left: 0;
+    top: 0;
     background: linear-gradient(90deg,#60a5fa,#22d3ee,#818cf8);
     background-size: 200% 200%;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: gradientFlow 4s ease infinite;
-}
-
-.logo-icon {
-    font-size: 18px;
-}
-
-.tag {
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-weight: 600;
-    opacity: 0;
-    animation: fadeInTag 0.6s forwards;
-}
-
-.tag.beta {
-    background: linear-gradient(145deg,#facc15,#eab308);
-    color: #020617;
-}
-
-.tag.stable {
-    background: linear-gradient(145deg,#22c55e,#16a34a);
-    color: #022c22;
-}
-
-.info-btn,
-#themeToggle {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    background: transparent;
-    color: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-}
-
-.info-btn:hover,
-#themeToggle:hover {
-    background: rgba(255,255,255,0.1);
-    transform: scale(1.1);
-}
-
-#themeToggle:hover {
-    transform: rotate(15deg) scale(1.1);
-}
-
-.navbar.hide {
-    transform: translateY(-100%);
-}
-
-@keyframes navbarSlide {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes fadeInTag {
-    to { opacity: 1; }
+    filter: blur(10px);
+    opacity: 0.5;
+    z-index: -1;
+    animation: gradientFlow 5s ease infinite;
 }
 
 @keyframes gradientFlow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+/* ====================================== */
+/* TAG (BETA/STABLE) */
+/* ====================================== */
+.tag {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    opacity: 0;
+    animation: fadeInTag 0.6s forwards 0.3s;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer effect untuk tag */
+.tag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    animation: shimmerTag 2s infinite;
+}
+
+@keyframes shimmerTag {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.tag.beta {
+    background: linear-gradient(145deg,#facc15,#eab308,#f59e0b);
+    color: #020617;
+    box-shadow: 0 2px 8px rgba(250, 204, 21, 0.4);
+}
+
+.tag.stable {
+    background: linear-gradient(145deg,#22c55e,#16a34a,#15803d);
+    color: white;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+/* ====================================== */
+/* BUTTONS */
+/* ====================================== */
+.info-btn,
+#themeToggle {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.2,.8,.2,1);
+    position: relative;
+    overflow: hidden;
+}
+
+body.dark .info-btn,
+body.dark #themeToggle {
+    background: rgba(255,255,255,0.05);
+}
+
+body.light .info-btn,
+body.light #themeToggle {
+    background: rgba(0,0,0,0.05);
+}
+
+/* Ripple effect */
+.info-btn::before,
+#themeToggle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(56, 189, 248, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.info-btn:active::before,
+#themeToggle:active::before {
+    width: 80px;
+    height: 80px;
+}
+
+/* Hover effects */
+.info-btn:hover,
+#themeToggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+body.dark .info-btn:hover,
+body.dark #themeToggle:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+body.light .info-btn:hover,
+body.light #themeToggle:hover {
+    background: rgba(0,0,0,0.08);
+}
+
+/* Theme toggle icon animation */
+#themeToggle i {
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+}
+
+#themeToggle:hover i {
+    transform: rotate(15deg) scale(1.1);
+}
+
+/* Saat switch theme, icon rotate 360deg */
+#themeToggle.switching i {
+    animation: iconRotate 0.5s ease;
+}
+
+@keyframes iconRotate {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Info button pulse animation */
+.info-btn {
+    animation: buttonPulse 3s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+    }
+    50% {
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+    }
+}
+
+/* ====================================== */
+/* HIDE/SHOW ANIMATIONS */
+/* ====================================== */
+.navbar.hide {
+    transform: translateY(-100%);
+    box-shadow: none;
+}
+
+@keyframes navbarSlide {
+    from { 
+        transform: translateY(-100%); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+
+@keyframes fadeInTag {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+}
+
+/* ====================================== */
+/* RESPONSIVE */
+/* ====================================== */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0 16px;
+    }
+    
+    .logo {
+        font-size: 16px;
+    }
+    
+    .tag {
+        font-size: 9px;
+        padding: 3px 8px;
+    }
+    
+    .info-btn,
+    #themeToggle {
+        width: 38px;
+        height: 38px;
+    }
+}
+
+/* ====================================== */
+/* ADDITIONAL EFFECTS */
+/* ====================================== */
+
+/* Divider between nav sections */
+.nav-right::before {
+    content: '';
+    width: 1px;
+    height: 24px;
+    margin: 0 4px;
+    opacity: 0.2;
+}
+
+body.dark .nav-right::before {
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255,255,255,0.5),
+        transparent
+    );
+}
+
+body.light .nav-right::before {
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0,0,0,0.3),
+        transparent
+    );
+}
+
+/* Hover effect untuk seluruh navbar */
+.navbar:hover {
+    backdrop-filter: blur(24px) saturate(200%);
+}
+
+/* Performance optimization */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
