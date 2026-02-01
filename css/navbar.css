@@ -1,0 +1,111 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    backdrop-filter: blur(14px);
+    z-index: 100;
+
+    transition: transform 0.35s ease;
+    animation: navbarSlide 0.6s cubic-bezier(.2,.8,.2,1);
+}
+
+body.dark .navbar {
+    background: rgba(2,6,23,0.75);
+    color: white;
+}
+
+body.light .navbar {
+    background: rgba(255,255,255,0.75);
+    color: #020617;
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 600;
+    background: linear-gradient(90deg,#60a5fa,#22d3ee,#818cf8);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 4s ease infinite;
+}
+
+.logo-icon {
+    font-size: 18px;
+}
+
+.tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    opacity: 0;
+    animation: fadeInTag 0.6s forwards;
+}
+
+.tag.beta {
+    background: linear-gradient(145deg,#facc15,#eab308);
+    color: #020617;
+}
+
+.tag.stable {
+    background: linear-gradient(145deg,#22c55e,#16a34a);
+    color: #022c22;
+}
+
+.info-btn,
+#themeToggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.info-btn:hover,
+#themeToggle:hover {
+    background: rgba(255,255,255,0.1);
+    transform: scale(1.1);
+}
+
+#themeToggle:hover {
+    transform: rotate(15deg) scale(1.1);
+}
+
+.navbar.hide {
+    transform: translateY(-100%);
+}
+
+@keyframes navbarSlide {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInTag {
+    to { opacity: 1; }
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
