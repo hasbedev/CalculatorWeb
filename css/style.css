@@ -22,36 +22,64 @@ body.dark {
         #312e81,
         #1e3a8a,
         #0c4a6e,
+        #164e63,
         #0f172a
     );
     background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    animation: gradientShift 12s ease infinite;
 }
 
-/* Tambahan layer untuk depth */
+/* Layer 1: Floating orbs (lebih cepat dan besar) */
 body.dark::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(
+            circle at 20% 50%,
+            rgba(59, 130, 246, 0.25) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(168, 85, 247, 0.25) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 40% 20%,
+            rgba(34, 211, 238, 0.2) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 60% 70%,
+            rgba(236, 72, 153, 0.15) 0%,
+            transparent 40%
+        );
+    animation: float 15s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Layer 2: Moving waves */
+body.dark::after {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(
-        circle at 20% 50%,
-        rgba(59, 130, 246, 0.15) 0%,
-        transparent 50%
-    ),
-    radial-gradient(
-        circle at 80% 80%,
-        rgba(168, 85, 247, 0.15) 0%,
-        transparent 50%
-    ),
-    radial-gradient(
-        circle at 40% 20%,
-        rgba(34, 211, 238, 0.1) 0%,
-        transparent 50%
-    );
-    animation: float 20s ease-in-out infinite;
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 100px,
+            rgba(59, 130, 246, 0.03) 100px,
+            rgba(59, 130, 246, 0.03) 200px
+        );
+    animation: moveWaves 20s linear infinite;
     pointer-events: none;
     z-index: 0;
 }
@@ -67,35 +95,62 @@ body.light {
         #bfdbfe,
         #bae6fd,
         #a5f3fc,
+        #fde68a,
         #fef3c7
     );
     background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    animation: gradientShift 12s ease infinite;
 }
 
 body.light::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(
+            circle at 30% 40%,
+            rgba(251, 191, 36, 0.3) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 70% 70%,
+            rgba(167, 139, 250, 0.3) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(56, 189, 248, 0.25) 0%,
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 80% 30%,
+            rgba(236, 72, 153, 0.2) 0%,
+            transparent 40%
+        );
+    animation: float 15s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.light::after {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(
-        circle at 30% 40%,
-        rgba(251, 191, 36, 0.2) 0%,
-        transparent 50%
-    ),
-    radial-gradient(
-        circle at 70% 70%,
-        rgba(167, 139, 250, 0.2) 0%,
-        transparent 50%
-    ),
-    radial-gradient(
-        circle at 50% 90%,
-        rgba(56, 189, 248, 0.15) 0%,
-        transparent 50%
-    );
-    animation: float 20s ease-in-out infinite;
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 100px,
+            rgba(251, 191, 36, 0.05) 100px,
+            rgba(251, 191, 36, 0.05) 200px
+        );
+    animation: moveWaves 20s linear infinite;
     pointer-events: none;
     z-index: 0;
 }
@@ -117,13 +172,25 @@ body.light::before {
 
 @keyframes float {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) rotate(0deg);
     }
-    33% {
-        transform: translate(30px, -30px) scale(1.1);
+    25% {
+        transform: translate(50px, -50px) rotate(5deg);
     }
-    66% {
-        transform: translate(-20px, 20px) scale(0.9);
+    50% {
+        transform: translate(-30px, 30px) rotate(-5deg);
+    }
+    75% {
+        transform: translate(40px, 40px) rotate(3deg);
+    }
+}
+
+@keyframes moveWaves {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(100px, 100px);
     }
 }
 
@@ -144,7 +211,7 @@ body.light::before {
     padding: 20px;
     border-radius: 20px;
 
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) saturate(180%);
     animation: popIn 0.6s cubic-bezier(.2,.8,.2,1);
 
     box-shadow:
@@ -156,13 +223,22 @@ body.light::before {
 }
 
 body.dark .calculator {
-    background: rgba(2, 6, 23, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(2, 6, 23, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 body.light .calculator {
-    background: rgba(255,255,255,0.85);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Glow effect saat hover */
+.calculator:hover {
+    box-shadow:
+        0 25px 50px rgba(59, 130, 246, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
 }
 
 /* DISPLAY BOX */
@@ -183,6 +259,34 @@ body.light .calculator {
         inset 0 -1px 1px rgba(255,255,255,0.05);
     
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer effect */
+.display-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+    );
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
 }
 
 .display-box:hover {
@@ -190,7 +294,7 @@ body.light .calculator {
     box-shadow:
         inset 0 2px 6px rgba(0,0,0,0.45),
         inset 0 -1px 1px rgba(255,255,255,0.05),
-        0 4px 12px rgba(0,0,0,0.2);
+        0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 body.dark .display-box {
@@ -215,6 +319,8 @@ body.light .display-box {
     font-size: 30px;
     text-align: right;
     letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
 }
 
 body.dark #display {
@@ -242,7 +348,30 @@ button {
 
     transition:
         transform 0.12s ease,
-        box-shadow 0.12s ease;
+        box-shadow 0.12s ease,
+        filter 0.12s ease;
+    
+    position: relative;
+    overflow: hidden;
+}
+
+/* Button glow effect */
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:active::before {
+    width: 200px;
+    height: 200px;
 }
 
 body.dark button {
@@ -260,6 +389,7 @@ body.light button {
 /* BUTTON EFFECT */
 button:hover {
     transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
 button:active,
@@ -275,10 +405,21 @@ button.active {
     color: #020617 !important;
     font-weight: 600;
     box-shadow: 0 6px 14px rgba(56, 189, 248, 0.4) !important;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 6px 14px rgba(56, 189, 248, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
+    }
 }
 
 .equal:hover {
     background: linear-gradient(145deg, #0ea5e9, #0284c7) !important;
+    animation: none;
 }
 
 .zero {
@@ -331,6 +472,7 @@ body.light .history-item {
 .history-item:hover {
     opacity: 1;
     transform: translateX(4px);
+    background: rgba(56, 189, 248, 0.15);
 }
 
 /* ========================= */
@@ -351,8 +493,17 @@ body.light .history-item {
     font-weight: 500;
 
     box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
-    animation: fadeUp 0.3s ease;
+    animation: fadeUp 0.3s ease, toastPulse 1.2s ease;
     z-index: 999;
+}
+
+@keyframes toastPulse {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.05);
+    }
 }
 
 body.light .toast {
