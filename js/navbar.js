@@ -1,4 +1,4 @@
-const APP_VERSION = "0.9.1"; // Update version karena ada perbaikan keamanan
+const APP_VERSION = "0.9.3"; // Update version karena ada perbaikan keamanan
 
 /* LOAD NAVBAR */
 fetch("components/navbar.html")
@@ -63,6 +63,10 @@ function initNavbar() {
     setTheme(localStorage.getItem("theme") || "dark");
 
     toggle.addEventListener("click", () => {
+        // Tambah class switching untuk animasi
+        toggle.classList.add("switching");
+        setTimeout(() => toggle.classList.remove("switching"), 500);
+        
         setTheme(body.classList.contains("dark") ? "light" : "dark");
     });
 
@@ -74,6 +78,14 @@ function initNavbar() {
 
         window.addEventListener("scroll", () => {
             const current = window.scrollY;
+            
+            // Tambah class scrolled jika scroll > 50px
+            if (current > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+            
             if (current > lastScroll && current > 80) {
                 navbar.classList.add("hide");
             } else {
